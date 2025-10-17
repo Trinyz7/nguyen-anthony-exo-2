@@ -1,7 +1,23 @@
-import db from "../config/db.js";
+import mongoose from "mongoose";
+
+const todoSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true, trim: true },
+    done: { type: Boolean, default: false }
+  },
+  { timestamps: true }
+);
+
+const TodoDoc = mongoose.models.Todo || mongoose.model("Todo", todoSchema);
+
 export default class Todo {
-  constructor(){ this.todos = db.todos; this.id = 1; }
-  getAll(){ return this.todos; }
-  addTask(title){ const t = { id: this.id++, title, done:false }; this.todos.push(t); return t; }
-  deleteTask(id){ const i = this.todos.findIndex(t=>t.id===id); if(i!==-1){ return this.todos.splice(i,1)[0]; } return null; }
+  getAll() {
+    return TodoDoc.find().sort({ createdAt: -1 }).lean();
+  }
+  addTask(title) {
+    return TodoDoc.create({ title });
+  }
+  deleteTask(id) {
+    return TodoDoc.findByIdAndDelete(id);
+  }
 }
