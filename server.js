@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./src/config/db.js";
 import todoRoutes from "./src/routes/mesRoutes.js";
+import { connectDB } from "./src/config/db.pg.js";
 
 dotenv.config();
 
