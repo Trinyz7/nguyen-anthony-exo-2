@@ -4,6 +4,12 @@
 ```bash
 npm install
 ```
+## Configuration
+Créer un fichier `.env` à la racine :
+```env
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/todolist
+```
 
 ## Démarrer en dev
 ```bash
