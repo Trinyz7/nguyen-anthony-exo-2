@@ -1,0 +1,236 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Todolist API",
+    "version": "1.0.0",
+    "description": "API REST pour gérer des tâches avec MongoDB et PostgreSQL"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Serveur de développement"
+    }
+  ],
+  "tags": [
+    {
+      "name": "MongoDB",
+      "description": "Opérations sur les tâches MongoDB"
+    },
+    {
+      "name": "PostgreSQL",
+      "description": "Opérations sur les tâches PostgreSQL"
+    }
+  ],
+  "paths": {
+    "/api/tasks": {
+      "get": {
+        "tags": ["MongoDB"],
+        "summary": "Lister toutes les tâches MongoDB",
+        "responses": {
+          "200": {
+            "description": "Liste des tâches",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskMongo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["MongoDB"],
+        "summary": "Créer une nouvelle tâche MongoDB",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tâche créée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskMongo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données invalides"
+          }
+        }
+      }
+    },
+    "/api/tasks/{id}": {
+      "delete": {
+        "tags": ["MongoDB"],
+        "summary": "Supprimer une tâche MongoDB",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID de la tâche MongoDB"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tâche supprimée avec succès"
+          },
+          "404": {
+            "description": "Tâche introuvable"
+          }
+        }
+      }
+    },
+    "/api/tasks/pg": {
+      "get": {
+        "tags": ["PostgreSQL"],
+        "summary": "Lister toutes les tâches PostgreSQL",
+        "responses": {
+          "200": {
+            "description": "Liste des tâches",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskPostgres"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["PostgreSQL"],
+        "summary": "Créer une nouvelle tâche PostgreSQL",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tâche créée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskPostgres"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données invalides"
+          }
+        }
+      }
+    },
+    "/api/tasks/pg/{id}": {
+      "delete": {
+        "tags": ["PostgreSQL"],
+        "summary": "Supprimer une tâche PostgreSQL",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID de la tâche PostgreSQL"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tâche supprimée avec succès"
+          },
+          "404": {
+            "description": "Tâche introuvable"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TaskInput": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Faire les courses"
+          }
+        }
+      },
+      "TaskMongo": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "6756abc123def456"
+          },
+          "title": {
+            "type": "string",
+            "example": "Faire les courses"
+          },
+          "completed": {
+            "type": "boolean",
+            "example": false
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "TaskPostgres": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "example": "Réviser le backend"
+          },
+          "done": {
+            "type": "boolean",
+            "example": false
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}
